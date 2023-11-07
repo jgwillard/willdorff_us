@@ -3,9 +3,7 @@ import django
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 
-os.environ.setdefault(
-    "DJANGO_SETTINGS_MODULE", "wildorff_us.settings"
-)  # Change 'your_project_name' to your project's settings module
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "willdorff_us.settings")
 django.setup()
 
 from events.models import Event, Invitee, Invitation

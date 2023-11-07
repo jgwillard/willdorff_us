@@ -1,5 +1,5 @@
 """
-URL configuration for wildorff_us project.
+URL configuration for willdorff_us project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.2/topics/http/urls/
@@ -18,6 +18,6 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path('events/', include('events.urls')),
-    path('admin/', admin.site.urls),
+    path("events/", include("events.urls")),
+    path("admin/", admin.site.urls),
 ]

@@ -1,4 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 
-def index(request):
-    return render(request, "events/index.html")
+from .models import Invitation
+
+
+def rsvp(request, invitation_uuid):
+    invitation = get_object_or_404(Invitation, unique_id=invitation_uuid)
+    return render(request, "events/rsvp.html", {"invitation": invitation})

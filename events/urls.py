@@ -1,7 +1,7 @@
 from django.urls import path
 
-from . import views
+from .views import InvitationDetailView
 
 urlpatterns = [
-    path("rsvp/<str:invitation_uuid>/", views.rsvp, name="rsvp"),
+    path("rsvp/<uuid:unique_id>/", InvitationDetailView.as_view(), name="rsvp"),
 ]

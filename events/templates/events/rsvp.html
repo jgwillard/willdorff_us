@@ -7,5 +7,10 @@
   <body>
     <h1>Hello, {{ invitation.invitee.name }}</h1>
     <p>{{ invitation.event.name }}</p>
+    <form method="post" action="{% url 'rsvp' invitation.unique_id %}">
+      {% csrf_token %} {{ form.as_p }}
+
+      <button type="submit">Submit</button>
+    </form>
   </body>
 </html>

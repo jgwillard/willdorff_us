@@ -1,16 +1,13 @@
-<!DOCTYPE html>
-<html lang="en-US">
-  <head>
-    <meta charset="utf-8" />
-    <title>RSVP</title>
-  </head>
-  <body>
-    <h1>Hello, {{ invitation.invitee.name }}</h1>
-    <p>{{ invitation.event.name }}</p>
-    <form method="post" action="{% url 'rsvp' invitation.unique_id %}">
-      {% csrf_token %} {{ form.as_p }}
+{% extends "core/base.html" %}
 
-      <button type="submit">Submit</button>
-    </form>
-  </body>
-</html>
+{% block title %} RSVP {% endblock %}
+
+{% block content %}
+<h1>Hello, {{ invitation.invitee.name }}</h1>
+<p>{{ invitation.event.name }}</p>
+<form method="post" action="{% url 'rsvp' invitation.unique_id %}">
+  {% csrf_token %} {{ form.as_p }}
+
+  <button type="submit">Submit</button>
+</form>
+{% endblock %}

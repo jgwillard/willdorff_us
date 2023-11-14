@@ -1,14 +1,11 @@
-<!DOCTYPE html>
-<html lang="en-US">
-  <head>
-    <meta charset="utf-8" />
-    <title>Thanks</title>
-  </head>
-  <body>
-    <h1>Thank you for responding, {{ invitation.invitee.name }}!</h1>
-    <p>
-      If you need to change any details of your response, just follow the link
-      in your email again.
-    </p>
-  </body>
-</html>
+{% extends "core/base.html" %}
+
+{% block title %} Thanks {% endblock %}
+
+{% block content %}
+<h1>Thank you for responding, {{ invitation.invitee.name }}!</h1>
+<p>
+  If you need to change any details of your response, just follow the link in
+  your email again.
+</p>
+{% endblock %}

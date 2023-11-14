@@ -1,5 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 from django.views import generic
 
 from .forms import InvitationForm
@@ -7,30 +8,34 @@ from .models import Invitation
 
 
 class InvitationDetailView(generic.DetailView):
+    model = Invitation
     template_name = "events/rsvp.html"
+    slug_field = "unique_id"
+    slug_url_kwarg = "unique_id"
+    context_object_name = "invitation"
 
-    def get_object(self, unique_id):
-        return get_object_or_404(Invitation, unique_id=unique_id)
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = InvitationForm(instance=self.object)
+        context = self.get_context_data(form=form)
+        return self.render_to_response(context)
 
-    def get(self, request, unique_id):
-        invitation = self.get_object(unique_id)
-        form = InvitationForm(instance=invitation)
-        return render(
-            request,
-            self.template_name,
-            {"form": form, "invitation": invitation},
-        )
-
-    def post(self, request, unique_id):
-        invitation = self.get_object(unique_id)
-        form = InvitationForm(request.POST, instance=invitation)
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = InvitationForm(request.POST, instance=self.object)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(
-                "/success-url/"
-            )  # Replace with your success URL
-        return render(
-            request,
-            self.template_name,
-            {"form": form, "invitation": invitation},
-        )
+                reverse(
+                    "rsvp_thanks", kwargs={"unique_id": self.object.unique_id}
+                )
+            )
+        context = self.get_context_data(form=form)
+        return self.render_to_response(context)
+
+
+class InvitationConfirmationlView(generic.DetailView):
+    model = Invitation
+    template_name = "events/rsvp_thanks.html"
+    slug_field = "unique_id"
+    slug_url_kwarg = "unique_id"

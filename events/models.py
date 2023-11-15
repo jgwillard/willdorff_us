@@ -20,6 +20,7 @@ class Invitation(models.Model):
     )
     invitee = models.ForeignKey(Contact, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    has_responded = models.BooleanField(default=False)
     is_confirmed = models.BooleanField(default=False)
     num_guests = models.IntegerField("number of extra guests", default=0)
 

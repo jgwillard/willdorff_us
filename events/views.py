@@ -25,6 +25,9 @@ class InvitationDetailView(generic.DetailView):
         form = InvitationForm(request.POST, instance=self.object)
         if form.is_valid():
             form.save()
+            # record that a response has been given
+            self.object.has_responded = True
+            self.object.save()
             return HttpResponseRedirect(
                 reverse(
                     "rsvp_thanks", kwargs={"unique_id": self.object.unique_id}

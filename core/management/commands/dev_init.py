@@ -28,6 +28,17 @@ class Command(BaseCommand):
 
         try:
             output = call_command(
+                "makemigrations", stdout=self.stdout, stderr=self.stderr
+            )
+        except Exception as e:
+            self.stdout.write(
+                self.style.ERROR(f"Command execution failed: {e}")
+            )
+        else:
+            self.stdout.write(self.style.SUCCESS(output))
+
+        try:
+            output = call_command(
                 "migrate", stdout=self.stdout, stderr=self.stderr
             )
         except Exception as e:

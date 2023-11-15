@@ -1,0 +1,14 @@
+/* Global variables. */
+:root,
+::backdrop {
+  /* Default (light) theme */
+  --accent: #0da132;
+}
+
+/* Dark theme */
+@media (prefers-color-scheme: dark) {
+  :root,
+  ::backdrop {
+    --accent: #7b00ff;
+  }
+}

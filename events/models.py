@@ -7,11 +7,13 @@ from core.models import Contact
 class Event(models.Model):
     name = models.CharField(max_length=200)
     description = models.CharField(max_length=200)
-    date = models.DateTimeField()
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+    location = models.CharField(max_length=200)
     invitees = models.ManyToManyField(Contact, through="Invitation")
 
     def __str__(self) -> str:
-        return f"{self.name} {self.date.date()}"
+        return f"{self.name} {self.start_time.date()}"
 
 
 class Invitation(models.Model):
@@ -20,8 +22,7 @@ class Invitation(models.Model):
     )
     invitee = models.ForeignKey(Contact, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
-    has_responded = models.BooleanField(default=False)
-    is_confirmed = models.BooleanField(default=False)
+    is_attending = models.BooleanField(default=None, null=True)
     num_guests = models.IntegerField("number of extra guests", default=0)
 
     def __str__(self) -> str:

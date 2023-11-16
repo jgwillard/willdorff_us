@@ -17,7 +17,8 @@ class InvitationDetailView(generic.DetailView):
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         form = InvitationForm(instance=self.object)
-        context = self.get_context_data(form=form)
+        has_visited = self.object.is_attending is not None
+        context = self.get_context_data(form=form, has_visited=has_visited)
         return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):
@@ -25,9 +26,6 @@ class InvitationDetailView(generic.DetailView):
         form = InvitationForm(request.POST, instance=self.object)
         if form.is_valid():
             form.save()
-            # record that a response has been given
-            self.object.has_responded = True
-            self.object.save()
             return HttpResponseRedirect(
                 reverse(
                     "rsvp_thanks", kwargs={"unique_id": self.object.unique_id}

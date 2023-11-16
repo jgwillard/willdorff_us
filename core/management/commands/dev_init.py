@@ -1,10 +1,11 @@
 import os
 import subprocess
+from datetime import datetime, timedelta
 
 import django
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
-from django.utils import timezone
+from django.utils.timezone import get_current_timezone
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "willdorff_us.settings")
 django.setup()
@@ -75,11 +76,18 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS(output))
 
         try:
+            start_time = datetime(
+                1996, 11, 22, hour=19, tzinfo=get_current_timezone()
+            )
             e = Event(
-                name="Test", description="A test event", date=timezone.now()
+                name="Jingle All the Way",
+                description="A test event",
+                location="123 Fake St",
+                start_time=start_time,
+                end_time=start_time + timedelta(days=365, hours=1),
             )
             e.save()
-            c = Contact(name="John", email="jgwil2@gmail.com")
+            c = Contact(name="John Willard", email="jgwil2@gmail.com")
             c.save()
             e.invitees.add(c)
         except Exception as e:

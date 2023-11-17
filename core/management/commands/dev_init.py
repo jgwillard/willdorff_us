@@ -77,19 +77,25 @@ class Command(BaseCommand):
 
         try:
             start_time = datetime(
-                1996, 11, 22, hour=19, tzinfo=get_current_timezone()
+                1995, 12, 17, hour=19, tzinfo=get_current_timezone()
             )
             e = Event(
-                name="Jingle All the Way",
-                description="A test event",
+                name="Bonestorm Party",
+                description="Buy me Bonestorm or go to hell!",
                 location="123 Fake St",
                 start_time=start_time,
                 end_time=start_time + timedelta(days=365, hours=1),
             )
             e.save()
-            c = Contact(name="John Willard", email="jgwil2@gmail.com")
-            c.save()
-            e.invitees.add(c)
+            c1 = Contact(name="Bart Simpson", email="bart@gmail.com")
+            c1.save()
+            e.invitees.add(c1)
+            c2 = Contact(
+                name="Milhouse van Houten", email="milhouse@hotmail.com"
+            )
+            c2.save()
+            c3 = Contact(name="Nelson Muntz", email="nelson@gmail.com")
+            c3.save()
         except Exception as e:
             self.stdout.write(
                 self.style.ERROR(f"Command execution failed: {e}")

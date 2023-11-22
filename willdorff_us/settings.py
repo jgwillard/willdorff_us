@@ -27,6 +27,13 @@ SECRET_KEY = (
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+if DEBUG:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+else:
+    pass
+
+DEFAULT_FROM_EMAIL = "herb@site"
+
 ALLOWED_HOSTS = []
 
 INTERNAL_IPS = [

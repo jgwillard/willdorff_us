@@ -3,7 +3,7 @@
 {% block title %} RSVP {% endblock %}
 
 {% block content %}
-<h1>Hello, {{ invitation.invitee.name }}</h1>
+<h1>Hello, {{ invitation.invitee.display_name }}</h1>
 {% if has_visited %}
 <p class="notice">You've already responded, but you can update your response below.</p>
 {% endif %}

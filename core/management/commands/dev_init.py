@@ -87,7 +87,12 @@ class Command(BaseCommand):
                 end_time=start_time + timedelta(days=365, hours=1),
             )
             e.save()
-            c1 = Contact(name="Bart Simpson", email="bart@gmail.com")
+            c1 = Contact(
+                name="Bart Simpson",
+                given_name="Bart",
+                family_name="Simpson",
+                email="bart@gmail.com",
+            )
             c1.save()
             e.invitees.add(c1)
             c2 = Contact(

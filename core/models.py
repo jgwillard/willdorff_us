@@ -7,5 +7,9 @@ class Contact(models.Model):
     family_name = models.CharField(max_length=200)
     email = models.CharField(max_length=200)
 
+    @property
+    def display_name(self):
+        return self.given_name if self.given_name else self.name
+
     def __str__(self) -> str:
         return f"{self.name} <{self.email}>"

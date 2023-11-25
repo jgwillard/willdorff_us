@@ -22,6 +22,7 @@ class Invitation(models.Model):
     )
     invitee = models.ForeignKey(Contact, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    is_sent = models.BooleanField(default=False)
     is_attending = models.BooleanField(default=None, null=True)
     num_guests = models.IntegerField("number of extra guests", default=0)
 

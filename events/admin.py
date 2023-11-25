@@ -22,33 +22,40 @@ class EventAdmin(admin.ModelAdmin):
         for event in queryset:
             # NOTE see https://stackoverflow.com/questions/2005953/access-fields-in-django-intermediate-model
             for invitation in event.invitation_set.all():
-                try:
-                    subject = f"RSVP to {event.name}"
-                    template_name = "events/emails/rsvp_email.html"
-                    link = settings.HOST + reverse(
-                        "rsvp", kwargs={"unique_id": invitation.unique_id}
-                    )
-                    context = {
-                        "subject": subject,
-                        "event": event,
-                        "invitation": invitation,
-                        "link": link,
-                    }
+                if not invitation.is_sent:
+                    try:
+                        subject = f"RSVP to {event.name}"
+                        template_name = "events/emails/rsvp_email.html"
+                        link = settings.HOST + reverse(
+                            "rsvp", kwargs={"unique_id": invitation.unique_id}
+                        )
+                        context = {
+                            "subject": subject,
+                            "event": event,
+                            "invitation": invitation,
+                            "link": link,
+                        }
 
-                    html_message = render_to_string(template_name, context)
-                    recipient_list = [invitation.invitee.email]
-                    send_mail(
-                        subject,
-                        "",
-                        settings.DEFAULT_FROM_EMAIL,
-                        recipient_list,
-                        html_message=html_message,
-                        fail_silently=False,
-                    )
-                except Exception as e:
-                    messages.error(
-                        request,
-                        f"Error occurred while trying to email invitation to {invitation.invitee.email}: {str(e)}",
+                        html_message = render_to_string(template_name, context)
+                        recipient_list = [invitation.invitee.email]
+                        send_mail(
+                            subject,
+                            "",
+                            settings.DEFAULT_FROM_EMAIL,
+                            recipient_list,
+                            html_message=html_message,
+                            fail_silently=False,
+                        )
+                        invitation.is_sent = True
+                        invitation.save()
+                    except Exception as e:
+                        messages.error(
+                            request,
+                            f"Error occurred while trying to email invitation to {invitation.invitee.email}: {str(e)}",
+                        )
+                else:
+                    messages.warning(
+                        request, "Some invitations have already been sent"
                     )
 
             messages.success(

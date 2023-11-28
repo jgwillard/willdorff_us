@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
+from distutils.util import strtobool
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,14 +29,33 @@ SECRET_KEY = (
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-HOST = os.environ.get("HOST", default="http://localhost:8000/")
+HOST = os.environ.get("HOST")
 
-if DEBUG:
-    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-else:
-    pass
+EMAIL_BACKEND = (
+    "django.core.mail.backends.console.EmailBackend"
+    if DEBUG
+    else "django.core.mail.backends.smtp.EmailBackend"
+)
 
-DEFAULT_FROM_EMAIL = "herb@site"
+
+EMAIL_HOST = os.environ.get("EMAIL_HOST")
+
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+
+# NOTE use port 465 with SSL or port 587 with TLS
+EMAIL_PORT = os.environ.get("EMAIL_PORT")
+
+EMAIL_USE_SSL = bool(
+    strtobool(os.environ.get("EMAIL_USE_SSL", default="false"))
+)
+
+EMAIL_USE_TLS = bool(
+    strtobool(os.environ.get("EMAIL_USE_TLS", default="false"))
+)
+
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL")
 
 ALLOWED_HOSTS = []
 

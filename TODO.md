@@ -18,5 +18,10 @@
 
 - create contacts
   - ~~refine contact model (how should names be stored, etc)~~
-  - support bulk upload of contacts
+  - ~~support bulk upload of contacts~~
   - support mailing lists
+
+## Tech
+
+- create tests
+  - contacts csv bulk upload

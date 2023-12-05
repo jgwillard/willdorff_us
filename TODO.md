@@ -14,6 +14,8 @@
 
 - create events
   - ~~improve event model (start time, end time, etc)~~
+  - description should be textfield
+  - user-friendly time format
   - create invitations in bulk at same time as event creation in admin
 
 - create contacts

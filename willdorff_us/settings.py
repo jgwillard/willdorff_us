@@ -56,7 +56,7 @@ EMAIL_USE_TLS = bool(
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL")
 
 ALLOWED_HOSTS = [
-    "www.willdorff.us"
+    "www.willdorff.us",
 ]
 
 INTERNAL_IPS = [

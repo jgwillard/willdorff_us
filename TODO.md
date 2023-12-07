@@ -2,6 +2,8 @@
 
 ## User features
 
+- custom 404 page
+
 - email event guests
   - ~~form to RSVP to an event~~
   - html email templates
@@ -25,5 +27,6 @@
 
 ## Tech
 
+- automate DB backups
 - create tests
   - contacts csv bulk upload

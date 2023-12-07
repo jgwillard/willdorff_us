@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(strtobool(os.environ.get("DEBUG", default="false")))
 
 HOST = os.environ.get("HOST")
 
@@ -56,7 +56,7 @@ EMAIL_USE_TLS = bool(
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL")
 
 ALLOWED_HOSTS = [
-    "www.willdorff.us",
+    "willdorff.us",
 ]
 
 INTERNAL_IPS = [

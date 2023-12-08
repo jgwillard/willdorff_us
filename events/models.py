@@ -6,7 +6,7 @@ from core.models import Contact
 
 class Event(models.Model):
     name = models.CharField(max_length=200)
-    description = models.CharField(max_length=200)
+    description = models.TextField()
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     location = models.CharField(max_length=200)

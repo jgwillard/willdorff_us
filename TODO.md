@@ -2,7 +2,7 @@
 
 ## User features
 
-- custom 404 page
+- ~~custom 404 page~~
 
 - email event guests
   - ~~form to RSVP to an event~~
@@ -16,7 +16,7 @@
 
 - create events
   - ~~improve event model (start time, end time, etc)~~
-  - description should be textfield
+  - ~~description should be textfield~~
   - user-friendly time format
   - create invitations in bulk at same time as event creation in admin
 
@@ -30,3 +30,4 @@
 - automate DB backups
 - create tests
   - contacts csv bulk upload
+- update to Django 5.0

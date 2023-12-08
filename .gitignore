@@ -1,5 +1,5 @@
 venv/
-./static/
+/static/
 **/__pycache__/
 *.sqlite3
 *.jpg

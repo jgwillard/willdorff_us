@@ -32,7 +32,7 @@ class ContactAdmin(admin.ModelAdmin):
                         failed_to_save_contacts = []
                         for row in contacts_reader:
                             name = row["Name"]
-                            given_name = (row["Given Name"],)
+                            given_name = row["Given Name"]
                             family_name = row["Family Name"]
                             email = row["E-mail 1 - Value"]
                             try:

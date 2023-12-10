@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator
 from django.db import models
 import uuid
 
@@ -24,7 +25,9 @@ class Invitation(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     is_sent = models.BooleanField(default=False)
     is_attending = models.BooleanField(default=None, null=True)
-    num_guests = models.IntegerField("number of extra guests", default=0)
+    num_guests = models.IntegerField(
+        "number of extra guests", default=0, validators=[MinValueValidator(0)]
+    )
 
     def __str__(self) -> str:
         return f"{self.invitee}::{self.event}"

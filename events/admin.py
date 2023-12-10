@@ -55,7 +55,8 @@ class EventAdmin(admin.ModelAdmin):
                         )
                 else:
                     messages.warning(
-                        request, "Some invitations have already been sent"
+                        request,
+                        f"Invitation has already been sent to {invitation.invitee.email}. Invitation not re-sent.",
                     )
 
             messages.success(

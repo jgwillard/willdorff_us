@@ -6,6 +6,7 @@
 
 - email event guests
   - ~~form to RSVP to an event~~
+  - allow users to store and send from multiple email addresses
   - html email templates
     - ~~single template pulling invitee name, event description, etc (MVP)~~
     - add styling

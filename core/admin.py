@@ -36,12 +36,14 @@ class ContactAdmin(admin.ModelAdmin):
                             family_name = row["Family Name"]
                             email = row["E-mail 1 - Value"]
                             try:
-                                Contact(
+                                c = Contact(
                                     name=name,
                                     given_name=given_name,
                                     family_name=family_name,
                                     email=email,
-                                ).save()
+                                )
+                                c.full_clean()
+                                c.save()
                             except Exception as e:
                                 failed_to_save_contacts.append(
                                     f"{name}::{email} -- {e}"

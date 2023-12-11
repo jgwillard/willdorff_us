@@ -13,6 +13,15 @@ class Event(models.Model):
     location = models.CharField(max_length=200)
     invitees = models.ManyToManyField(Contact, through="Invitation")
 
+    @property
+    def total_expected_guests(self) -> int:
+        return sum(
+            map(
+                lambda i: i.num_guests + 1 if i.is_attending else 0,
+                self.invitation_set.all(),
+            )
+        )
+
     def __str__(self) -> str:
         return f"{self.name} {self.start_time.date()}"
 

@@ -8,7 +8,6 @@ from .models import Event, Invitation
 
 class InvitationModelTests(TestCase):
     def setUp(self):
-        # Create necessary instances for ForeignKey fields
         self.contact = Contact.objects.create(
             name="John Doe", email="john@example.com"
         )

@@ -14,6 +14,7 @@ class InvitationInline(admin.TabularInline):
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
+    readonly_fields = ("total_expected_guests",)
     inlines = [InvitationInline]
     actions = ["email_invitations"]
 

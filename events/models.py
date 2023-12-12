@@ -1,5 +1,6 @@
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.db.models import Sum, F, Case, When, Value, IntegerField
 import uuid
 
 from core.models import Contact
@@ -15,11 +16,17 @@ class Event(models.Model):
 
     @property
     def total_expected_guests(self) -> int:
-        return sum(
-            map(
-                lambda i: i.num_guests + 1 if i.is_attending else 0,
-                self.invitation_set.all(),
-            )
+        return (
+            self.invitation_set.filter(is_attending=True).aggregate(
+                total_guests=Sum(
+                    Case(
+                        When(is_attending=True, then=F("num_guests") + 1),
+                        default=Value(0),
+                        output_field=IntegerField(),
+                    )
+                )
+            )["total_guests"]
+            or 0
         )
 
     def __str__(self) -> str:

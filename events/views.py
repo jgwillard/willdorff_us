@@ -14,6 +14,9 @@ class InvitationDetailView(generic.DetailView):
     slug_url_kwarg = "unique_id"
     context_object_name = "invitation"
 
+    def get_queryset(self):
+        return super().get_queryset().select_related("invitee", "event")
+
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         form = InvitationForm(instance=self.object)

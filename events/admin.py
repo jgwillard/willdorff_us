@@ -11,6 +11,10 @@ class InvitationInline(admin.TabularInline):
     model = Invitation
     extra = 1
 
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        return queryset.select_related("invitee", "event")
+
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):

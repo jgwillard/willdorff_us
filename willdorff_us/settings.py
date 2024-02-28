@@ -73,7 +73,9 @@ INTERNAL_IPS = [
 
 INSTALLED_APPS = [
     "core.apps.CoreConfig",
+    "blog.apps.BlogConfig",
     "events.apps.EventsConfig",
+    "unfold",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",

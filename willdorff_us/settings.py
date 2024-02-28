@@ -76,6 +76,7 @@ INSTALLED_APPS = [
     "blog.apps.BlogConfig",
     "events.apps.EventsConfig",
     "unfold",
+    "unfold.contrib.forms",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",

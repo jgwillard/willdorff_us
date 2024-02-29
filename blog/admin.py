@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.db import models
 
 from unfold.admin import ModelAdmin
-from unfold.contrib.forms.widgets import WysiwygWidget
+from django_ckeditor_5.widgets import CKEditor5Widget
 
 from blog.models import Post
 
@@ -11,6 +11,8 @@ from blog.models import Post
 class PostAdmin(ModelAdmin):
     formfield_overrides = {
         models.TextField: {
-            "widget": WysiwygWidget,
+            "widget": CKEditor5Widget(
+                attrs={"class": "django_ckeditor_5"}, config_name="extends"
+            ),
         }
     }

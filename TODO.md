@@ -26,6 +26,13 @@
   - ~~support bulk upload of contacts~~
   - support mailing lists
 
+- blog
+  - add `is_published` bool and only show published posts
+  - let author preview post before publishing
+  - button to publish
+  - author should be read_only and based on the logged in user when post is created
+  - track updated time
+
 ## Tech
 
 - automate DB backups

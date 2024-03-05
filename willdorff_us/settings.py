@@ -75,7 +75,6 @@ INSTALLED_APPS = [
     "core.apps.CoreConfig",
     "blog.apps.BlogConfig",
     "events.apps.EventsConfig",
-    "unfold",
     "django_ckeditor_5",
     "django.contrib.admin",
     "django.contrib.auth",

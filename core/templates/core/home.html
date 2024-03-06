@@ -4,11 +4,12 @@
 
 {% block content %}
 {% for post in posts %}
-  <div class="ck-content">
+  <section class="ck-content">
     <h2>{{ post.title }}</h2>
-    <p>{{ post.pub_date }}</p>
+    <p>{{ post.published_date }}</p>
     <p>{{ post.content|safe }}</p>
-  </div>
+    <p>- {{ post.author }}</p>
+  </section>
 {% endfor %}
 
 <!-- Add pagination links if needed -->

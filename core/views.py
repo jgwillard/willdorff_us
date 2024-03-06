@@ -7,5 +7,6 @@ class HomePageView(ListView):
     template_name = "core/home.html"
     model = Post
     context_object_name = "posts"
-    ordering = ["-pub_date"]
+    ordering = ["-published_date"]
     paginate_by = 3
+    queryset = Post.objects.filter(is_published=True)

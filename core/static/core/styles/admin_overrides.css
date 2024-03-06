@@ -8,17 +8,8 @@
   --mono-font: Consolas, Menlo, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
   --standard-border-radius: 5px;
 
-  /* Default (light) theme */
-  --bg: #fff;
-  --accent-bg: #f5f7ff;
-  --text: #212121;
-  --text-light: #585858;
-  --border: #898EA4;
-  --accent: #0d47a1;
-  --code: #d81b60;
-  --preformatted: #444;
-  --marked: #ffdd33;
-  --disabled: #efefef;
+  --simple-bg: #fff;
+  --simple-text: #212121;
 }
 
 .ck-content>h1,
@@ -28,8 +19,8 @@
 .ck-content>h5,
 .ck-content>h6,
 .ck-content>p {
-  color: var(--text);
-  background-color: var(--bg);
+  color: var(--simple-text);
+  background-color: var(--simple-bg);
   font-size: 1.15rem;
   line-height: 1.5;
 }

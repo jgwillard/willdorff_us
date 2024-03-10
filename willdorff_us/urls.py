@@ -22,12 +22,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path("", include("core.urls")),
     path("events/", include("events.urls")),
+    path("events/", include("blog.urls")),
     path("admin/", admin.site.urls),
-    path(
-        "ckeditor5/",
-        include("django_ckeditor_5.urls"),
-        name="ck_editor_5_upload_file",
-    ),
     path("__debug__/", include("debug_toolbar.urls")),
 ]
 

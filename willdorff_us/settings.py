@@ -136,7 +136,6 @@ CKEDITOR_5_CONFIGS = {
             "todoList",
             "|",
             "blockQuote",
-            "imageUpload",
             "|",
             "fontSize",
             "fontFamily",
@@ -147,14 +146,31 @@ CKEDITOR_5_CONFIGS = {
             "insertTable",
         ],
         "image": {
+            "upload": {
+                "types": [
+                    "jpeg",
+                    "png",
+                    "gif",
+                    "bmp",
+                    "webp",
+                    "tiff",
+                    "HEIC",
+                    "heic",
+                ]
+            },
             "toolbar": [
-                "imageTextAlternative",
-                "|",
                 "imageStyle:alignLeft",
                 "imageStyle:alignRight",
                 "imageStyle:alignCenter",
                 "imageStyle:side",
                 "|",
+                "imageTextAlternative",
+                "toggleImageCaption",
+                "|",
+                "imageStyle:inline",
+                "imageStyle:wrapText",
+                "imageStyle:breakText" "|",
+                "resizeImage",
             ],
             "styles": [
                 "full",

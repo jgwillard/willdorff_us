@@ -1,7 +1,9 @@
 venv/
-/static/
+static/
 **/__pycache__/
 *.sqlite3
 *.jpg
 .env
 .vscode/
+.DS_Store
+media/

@@ -13,9 +13,9 @@ from django_ckeditor_5.views import (
 
 from PIL import Image, ExifTags, ImageOps
 
-# from pillow_heif import register_heif_opener
+from pillow_heif import register_heif_opener
 
-# register_heif_opener()
+register_heif_opener()
 
 
 # copied from django-resized
@@ -61,7 +61,8 @@ def normalize_rotation(image):
 
 def resize_image(f):
     img = Image.open(f)
-    # img = normalize_rotation(img)
+    if img.format != "JPEG":
+        img = img.convert("RGB")
     max_width = 1024
     aspect_ratio = max_width / float(img.size[0])
     new_height = int(float(img.size[1]) * float(aspect_ratio))
@@ -72,16 +73,14 @@ def resize_image(f):
         ),
         Image.Resampling.LANCZOS,
     )
-    thumb = img
-    original_format = img.format or "JPEG"
     output = BytesIO()
-    thumb.save(output, format=original_format, **img.info)
+    img.save(output, format="JPEG")
     output.seek(0)
     return InMemoryUploadedFile(
         file=output,
         field_name=None,
         name=f.name,
-        content_type=f.content_type,
+        content_type="img/jpeg",
         size=output.tell(),
         charset=None,
     )

@@ -61,8 +61,6 @@ def normalize_rotation(image):
 
 def resize_image(f):
     img = Image.open(f)
-    if img.format != "JPEG":
-        img = img.convert("RGB")
     max_width = 1024
     aspect_ratio = max_width / float(img.size[0])
     new_height = int(float(img.size[1]) * float(aspect_ratio))

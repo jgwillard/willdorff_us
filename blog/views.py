@@ -11,52 +11,11 @@ from django_ckeditor_5.views import (
     handle_uploaded_file,
 )
 
-from PIL import Image, ExifTags, ImageOps
+from PIL import Image
 
 from pillow_heif import register_heif_opener
 
 register_heif_opener()
-
-
-# copied from django-resized
-# https://github.com/un1t/django-resized/blob/master/django_resized/forms.py
-def normalize_rotation(image):
-    """
-    Find orientation header and rotate the actual data instead.
-    Adapted from http://stackoverflow.com/a/6218425/723090
-    """
-    try:
-        image._getexif()
-    except AttributeError:
-        # No exit data; this image is not a jpg and can be skipped
-        return image
-
-    for orientation in ExifTags.TAGS.keys():
-        # Look for orientation header, stop when found
-        if ExifTags.TAGS[orientation] == "Orientation":
-            break
-    else:
-        # No orientation header found, do nothing
-        return image
-    # Apply the different possible orientations to the data; preserve format
-    format = image.format
-    exif = image._getexif()
-    if exif is None:
-        return image
-    action_nr = exif.get(orientation, None)
-    if action_nr is None:
-        # Empty orientation exif data
-        return image
-    if action_nr in (3, 4):
-        image = image.rotate(180, expand=True)
-    elif action_nr in (5, 6):
-        image = image.rotate(270, expand=True)
-    elif action_nr in (7, 8):
-        image = image.rotate(90, expand=True)
-    if action_nr in (2, 4, 5, 7):
-        image = ImageOps.mirror(image)
-    image.format = format
-    return image
 
 
 def resize_image(f):

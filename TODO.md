@@ -26,6 +26,14 @@
   - ~~support bulk upload of contacts~~
   - support mailing lists
 
+- blog
+  - ~~add `is_published` bool and only show published posts~~
+  - ~~author should be read_only and based on the logged in user when post is created~~
+  - ~~ensure image upload works with nginx~~
+  - ~~resize images~~
+  - clean up settings code
+  - let author preview post before publishing
+
 ## Tech
 
 - automate DB backups

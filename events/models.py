@@ -1,6 +1,6 @@
 from django.core.validators import MinValueValidator
 from django.db import models
-from django.db.models import Sum, F, Case, When, Value, IntegerField
+from django.db.models import Sum, F, Case, When, Value
 import uuid
 
 from core.models import Contact
@@ -22,7 +22,7 @@ class Event(models.Model):
                     Case(
                         When(is_attending=True, then=F("num_guests") + 1),
                         default=Value(0),
-                        output_field=IntegerField(),
+                        output_field=models.IntegerField(),
                     )
                 )
             )["total_guests"]

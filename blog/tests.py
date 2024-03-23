@@ -7,9 +7,10 @@ from django.core.files.uploadedfile import (
     SimpleUploadedFile,
     InMemoryUploadedFile,
 )
-from django.http import JsonResponse, Http404, HttpResponseRedirect
+from django.http import JsonResponse, Http404
 from django.contrib.auth.models import User
 
+from django_ckeditor_5.views import NoImageException
 from PIL import Image
 
 from .services import resize_image
@@ -84,3 +85,34 @@ class UploadFileTestCase(TestCase):
         self.assertIsInstance(response, JsonResponse)
         self.assertEqual(response.status_code, 200)
         self.assertIn("url", json_loads(response.content))
+
+    @patch("blog.views.image_verify")
+    def test_upload_file_post_empty_file(self, mock_image_verify):
+        mock_image_verify.return_value = None
+        mock_image_verify.side_effect = NoImageException
+
+        request = self.factory.post(
+            "/upload/",
+            {
+                "upload": SimpleUploadedFile(
+                    "test.jpg", b"content", content_type="image/jpeg"
+                )
+            },
+        )
+        request.user = self.staff_user
+
+        response = upload_file(request)
+
+        self.assertIsInstance(response, JsonResponse)
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("error", json_loads(response.content))
+
+    def test_upload_file_post_no_file(self):
+        request = self.factory.post("/upload/")
+        request.user = self.staff_user
+
+        response = upload_file(request)
+
+        self.assertIsInstance(response, JsonResponse)
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("error", json_loads(response.content))

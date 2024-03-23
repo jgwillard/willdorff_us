@@ -1,6 +1,6 @@
 from django.utils.translation import gettext_lazy as _
+from django.utils.datastructures import MultiValueDictKeyError
 from django.http import Http404, JsonResponse
-from django.contrib.admin.views.decorators import staff_member_required
 
 from django_ckeditor_5.views import (
     UploadFileForm,
@@ -20,9 +20,11 @@ def upload_file(request):
             image_verify(request.FILES["upload"])
         except NoImageException as ex:
             return JsonResponse({"error": {"message": f"{ex}"}}, status=400)
+        except MultiValueDictKeyError as ex:
+            return JsonResponse({"error": {"message": f"{ex}"}}, status=400)
         if form.is_valid():
             f = request.FILES["upload"]
-            # the following line is the only difference between this
+            # the following line is the main difference between this
             # function and django_ckeditor_5.views.upload_file
             resized = resize_image(f)
             url = handle_uploaded_file(resized)

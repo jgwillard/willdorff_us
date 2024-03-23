@@ -39,4 +39,4 @@
 - automate DB backups
 - create tests
   - contacts csv bulk upload
-- update to Django 5.0
+- ~~update to Django 5.0~~

@@ -6,7 +6,7 @@
   <body>
     <p>Hi, {{ invitation.invitee.display_name }}!</p>
     <p>You've been invited to {{ event.name }}.</p>
-    <p>{{ event.description }}</p>
+    <section>{{ event.description|safe }}</section>
     <p>Please <a href="{{ link }}">click here</a> to let us know if you can make it!</p>
   </body>
 </html>

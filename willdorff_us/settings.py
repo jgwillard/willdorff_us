@@ -58,6 +58,7 @@ DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL")
 ALLOWED_HOSTS = (
     [
         "127.0.0.1",
+        "localhost",
     ]
     if DEBUG
     else [

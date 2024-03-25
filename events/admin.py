@@ -1,8 +1,11 @@
 from django.conf import settings
 from django.contrib import admin, messages
 from django.core.mail import send_mail
+from django.db import models
 from django.template.loader import render_to_string
 from django.urls import reverse
+
+from django_ckeditor_5.widgets import CKEditor5Widget
 
 from .models import Event, Invitation
 
@@ -19,6 +22,13 @@ class InvitationInline(admin.TabularInline):
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     readonly_fields = ("total_expected_guests",)
+    formfield_overrides = {
+        models.TextField: {
+            "widget": CKEditor5Widget(
+                attrs={"class": "django_ckeditor_5"}, config_name="extends"
+            )
+        }
+    }
     inlines = [InvitationInline]
     actions = ["email_invitations"]
 

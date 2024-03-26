@@ -13,3 +13,11 @@ class Contact(models.Model):
 
     def __str__(self) -> str:
         return f"{self.name} <{self.email}>"
+
+
+class ContactList(models.Model):
+    name = models.CharField(max_length=200)
+    contacts = models.ManyToManyField(Contact)
+
+    def __str__(self) -> str:
+        return self.name

@@ -5,7 +5,7 @@ from django.contrib import admin, messages
 from django.http import HttpResponseRedirect
 from django.urls import path, reverse
 
-from .models import Contact
+from .models import Contact, ContactList
 
 admin.site.site_header = "willdorff.us administration"
 
@@ -69,3 +69,19 @@ class ContactAdmin(admin.ModelAdmin):
                 return HttpResponseRedirect(user_url)
 
         return HttpResponseRedirect(user_url)
+
+
+class ContactInline(admin.TabularInline):
+    model = Contact.contactlist_set.through
+    extra = 1
+
+
+@admin.register(ContactList)
+class ContactListAdmin(admin.ModelAdmin):
+    inlines = [ContactInline]
+
+    # hide default selectbox widget as it is replaced by ContactInline
+    def formfield_for_manytomany(self, db_field, request, **kwargs):
+        if db_field.name == "contacts":
+            kwargs["widget"] = forms.MultipleHiddenInput()
+        return super().formfield_for_manytomany(db_field, request, **kwargs)

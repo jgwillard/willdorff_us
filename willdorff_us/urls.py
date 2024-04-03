@@ -20,9 +20,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path("", include("core.urls")),
+    path("", include("blog.urls")),
     path("events/", include("events.urls")),
-    path("events/", include("blog.urls")),
     path("admin/", admin.site.urls),
     path("__debug__/", include("debug_toolbar.urls")),
 ]

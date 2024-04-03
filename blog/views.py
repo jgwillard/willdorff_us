@@ -1,5 +1,6 @@
 from django.utils.translation import gettext_lazy as _
 from django.utils.datastructures import MultiValueDictKeyError
+from django.views.generic import ListView
 from django.http import Http404, JsonResponse
 
 from django_ckeditor_5.views import (
@@ -9,7 +10,17 @@ from django_ckeditor_5.views import (
     handle_uploaded_file,
 )
 
+from .models import Post
 from .services import resize_image
+
+
+class HomePageView(ListView):
+    template_name = "blog/home.html"
+    model = Post
+    context_object_name = "posts"
+    ordering = ["-published_date"]
+    paginate_by = 3
+    queryset = Post.objects.filter(is_published=True)
 
 
 # copied from django_ckeditor_5.views

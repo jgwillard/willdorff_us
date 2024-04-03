@@ -18,7 +18,9 @@ class UploadFileForm(forms.Form):
 class ContactAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super().get_urls()
-        new_urls = [path("upload-csv/", self.upload_csv, name="upload_csv")]
+        new_urls = [
+            path("upload-csv/", self.upload_csv, name="core_contact_upload_csv")
+        ]
         return new_urls + urls
 
     def upload_csv(self, request):

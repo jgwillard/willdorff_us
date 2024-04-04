@@ -1,0 +1,21 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<div class="module">
+    <h1>Select a Contact List to Invite Contacts</h1>
+    <form method="post" action="{% url 'admin:events_event_invite_contacts_from_list' %}">
+        {% csrf_token %}
+        <label for="id_contact_list">Contact List:</label>
+        <select name="contact_list" id="id_contact_list">
+            {% for contact_list in contact_lists %}
+                <option value="{{ contact_list.id }}">{{ contact_list.name }}</option>
+            {% endfor %}
+        </select>
+        {% for event in events %}
+          <input type="hidden" name="selected_ids" value="{{ event.id }}" selected>
+        {% endfor %}
+        <input type="submit" name="apply" value="Invite Contacts">
+        <a href="{% url 'admin:events_event_changelist' %}" >Cancel</a>
+    </form>
+</div>
+{% endblock %}

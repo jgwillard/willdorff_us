@@ -102,5 +102,5 @@ source venv/bin/activate
 pip install -r requirements.txt # if dependencies were updated
 ./manage.py migrate # if schemas were updated
 ./manage.py collectstatic # if static resources were updated
-sudo systemd restart gunicorn
+sudo systemctl restart gunicorn
 ```

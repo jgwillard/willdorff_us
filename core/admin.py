@@ -86,4 +86,5 @@ class ContactListAdmin(admin.ModelAdmin):
     def formfield_for_manytomany(self, db_field, request, **kwargs):
         if db_field.name == "contacts":
             kwargs["widget"] = forms.MultipleHiddenInput()
+            kwargs["required"] = False
         return super().formfield_for_manytomany(db_field, request, **kwargs)

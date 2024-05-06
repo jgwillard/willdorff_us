@@ -9,8 +9,9 @@
   - allow users to store and send from multiple email addresses
   - html email templates
     - ~~single template pulling invitee name, event description, etc (MVP)~~
-    - add styling
+    - support images
     - support gifs
+    - add styling
     - wysiwyg
   - send follow up emails to invitees who haven't responded
     - schedule followup emails

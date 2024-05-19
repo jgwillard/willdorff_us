@@ -10,6 +10,7 @@
   - html email templates
     - ~~single template pulling invitee name, event description, etc (MVP)~~
     - support images
+      - gmail requires image upload to google, will not display from arbitrary address
     - support gifs
     - add styling
     - wysiwyg
@@ -17,15 +18,16 @@
     - schedule followup emails
 
 - create events
+  - 404 page for rsvp pages when event is in the past
   - ~~improve event model (start time, end time, etc)~~
   - ~~description should be textfield~~
   - user-friendly time format
-  - create invitations in bulk at same time as event creation in admin
+  - ~~create invitations in bulk at same time as event creation in admin~~
 
 - create contacts
   - ~~refine contact model (how should names be stored, etc)~~
   - ~~support bulk upload of contacts~~
-  - support mailing lists
+  - ~~support mailing lists~~
 
 - blog
   - ~~add `is_published` bool and only show published posts~~

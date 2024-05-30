@@ -18,7 +18,7 @@
     - schedule followup emails
 
 - create events
-  - 404 page for rsvp pages when event is in the past
+  - ~~404 page for rsvp pages when event is in the past~~
   - ~~improve event model (start time, end time, etc)~~
   - ~~description should be textfield~~
   - user-friendly time format

@@ -1,6 +1,6 @@
-from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
+from django.http import Http404, HttpResponseRedirect
 from django.urls import reverse
+from django.utils import timezone
 from django.views import generic
 
 from .forms import InvitationForm
@@ -19,6 +19,9 @@ class InvitationDetailView(generic.DetailView):
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
+        now = timezone.now()
+        if self.object.event.end_time < now:
+            raise Http404("Event is in the past")
         form = InvitationForm(instance=self.object)
         has_visited = self.object.is_attending is not None
         context = self.get_context_data(form=form, has_visited=has_visited)

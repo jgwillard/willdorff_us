@@ -45,7 +45,11 @@ class EventAdmin(admin.ModelAdmin):
         }
     }
     inlines = [InvitationInline]
-    actions = ["email_invitations", "invite_contacts_from_list"]
+    actions = [
+        "email_invitations",
+        "email_reminders",
+        "invite_contacts_from_list",
+    ]
 
     @admin.action(description="Email invitations for selected events")
     def email_invitations(self, request, queryset):
@@ -87,6 +91,55 @@ class EventAdmin(admin.ModelAdmin):
                     messages.warning(
                         request,
                         f"Invitation has already been sent to {invitation.invitee.email}. Invitation not re-sent.",
+                    )
+
+            messages.success(
+                request, f"Successfully emailed invitations for {event}"
+            )
+
+    @admin.action(description="Email reminders for selected events")
+    def email_reminders(self, request, queryset):
+        for event in queryset:
+            # NOTE see https://stackoverflow.com/questions/2005953/access-fields-in-django-intermediate-model
+            for invitation in event.invitation_set.all():
+                if not invitation.is_attending and invitation.is_sent:
+                    try:
+                        subject = f"Reminder: {event.name}"
+                        template_name = "events/emails/reminder_email.html"
+                        link = settings.HOST + reverse(
+                            "rsvp", kwargs={"unique_id": invitation.unique_id}
+                        )
+                        context = {
+                            "subject": subject,
+                            "event": event,
+                            "invitation": invitation,
+                            "link": link,
+                        }
+
+                        html_message = render_to_string(template_name, context)
+                        recipient_list = [invitation.invitee.email]
+                        send_mail(
+                            subject,
+                            "",
+                            settings.DEFAULT_FROM_EMAIL,
+                            recipient_list,
+                            html_message=html_message,
+                            fail_silently=False,
+                        )
+                    except Exception as e:
+                        messages.error(
+                            request,
+                            f"Error occurred while trying to email invitation to {invitation.invitee.email}: {str(e)}",
+                        )
+                elif not invitation.is_sent:
+                    messages.warning(
+                        request,
+                        f"{invitation.invitee.display_name} has not been sent an invitation. Reminder not sent.",
+                    )
+                elif invitation.is_attending:
+                    messages.warning(
+                        request,
+                        f"{invitation.invitee.display_name} has already said they're coming. Reminder not sent.",
                     )
 
             messages.success(

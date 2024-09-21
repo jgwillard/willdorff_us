@@ -93,6 +93,23 @@ ExecStart=/path/to/project/venv/bin/gunicorn --access-logfile - --workers 3 --bi
 WantedBy=multi-user.target
 ```
 
+### Restart gunicorn
+
+Gunicorn process may fail due to an "Out of Memory (OOM)" condition.
+
+In that case, `sudo journalctl -u gunicorn` will show `systemd[1]: gunicorn.service: Failed with result 'oom-kill'.`
+
+To recover from this error, add the following to `/etc/systemd/system/gunicorn.service`:
+
+```
+[Service]
+Restart=always
+RestartSec=5
+# Optional: Limit the number of restarts within a time period to avoid a restart loop
+StartLimitInterval=10min
+StartLimitBurst=5
+```
+
 ## Deploying changes
 
 ```sh

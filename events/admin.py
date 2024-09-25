@@ -14,13 +14,12 @@ from core.models import ContactList
 from .models import Event, Invitation
 
 
-def send_reminder_email(invitation, event):
-    subject = f"Reminder: {event.name}"
-    template_name = "events/emails/reminder_email.html"
-    has_responded = invitation.is_attending is not None
+def send_event_email(invitation, event, subject, template_name):
+    subject = f"RSVP to {event.name}"
     link = settings.HOST + reverse(
         "rsvp", kwargs={"unique_id": invitation.unique_id}
     )
+    has_responded = invitation.is_attending is not None
     context = {
         "subject": subject,
         "event": event,
@@ -85,27 +84,11 @@ class EventAdmin(admin.ModelAdmin):
             for invitation in event.invitation_set.all():
                 if not invitation.is_sent:
                     try:
-                        subject = f"RSVP to {event.name}"
-                        template_name = "events/emails/rsvp_email.html"
-                        link = settings.HOST + reverse(
-                            "rsvp", kwargs={"unique_id": invitation.unique_id}
-                        )
-                        context = {
-                            "subject": subject,
-                            "event": event,
-                            "invitation": invitation,
-                            "link": link,
-                        }
-
-                        html_message = render_to_string(template_name, context)
-                        recipient_list = [invitation.invitee.email]
-                        send_mail(
-                            subject,
-                            "",
-                            settings.DEFAULT_FROM_EMAIL,
-                            recipient_list,
-                            html_message=html_message,
-                            fail_silently=False,
+                        send_event_email(
+                            invitation,
+                            event,
+                            f"RSVP to {event.name}",
+                            "events/emails/rsvp_email.html",
                         )
                         invitation.is_sent = True
                         invitation.save()
@@ -131,7 +114,12 @@ class EventAdmin(admin.ModelAdmin):
             for invitation in event.invitation_set.all():
                 if invitation.is_sent:
                     try:
-                        send_reminder_email(invitation, event)
+                        send_event_email(
+                            invitation,
+                            event,
+                            f"Reminder: {event.name}",
+                            "events/emails/reminder_email.html",
+                        )
                     except Exception as e:
                         messages.error(
                             request,
@@ -191,13 +179,18 @@ class InvitationAdmin(admin.ModelAdmin):
     readonly_fields = ("unique_id",)
     actions = ["email_reminders"]
 
-    @admin.action(description="Email reminders for selected events")
+    @admin.action(description="Email reminders for selected invitations")
     def email_reminders(self, request, queryset):
         for invitation in queryset:
             event = invitation.event
             if invitation.is_sent:
                 try:
-                    send_reminder_email(invitation, event)
+                    send_event_email(
+                        invitation,
+                        event,
+                        f"Reminder: {event.name}",
+                        "events/emails/reminder_email.html",
+                    )
                     messages.success(
                         request,
                         f"Successfully emailed reminder for {invitation}",

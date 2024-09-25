@@ -185,3 +185,48 @@ class EventAdmin(admin.ModelAdmin):
 @admin.register(Invitation)
 class InvitationAdmin(admin.ModelAdmin):
     readonly_fields = ("unique_id",)
+    actions = ["email_reminders"]
+
+    @admin.action(description="Email reminders for selected events")
+    def email_reminders(self, request, queryset):
+        for invitation in queryset:
+            event = invitation.event
+            if invitation.is_sent:
+                try:
+                    subject = f"Reminder: {event.name}"
+                    template_name = "events/emails/reminder_email.html"
+                    has_responded = invitation.is_attending is not None
+                    link = settings.HOST + reverse(
+                        "rsvp", kwargs={"unique_id": invitation.unique_id}
+                    )
+                    context = {
+                        "subject": subject,
+                        "event": event,
+                        "invitation": invitation,
+                        "link": link,
+                        "has_responded": has_responded,
+                    }
+
+                    html_message = render_to_string(template_name, context)
+                    recipient_list = [invitation.invitee.email]
+                    send_mail(
+                        subject,
+                        "",
+                        settings.DEFAULT_FROM_EMAIL,
+                        recipient_list,
+                        html_message=html_message,
+                        fail_silently=False,
+                    )
+                except Exception as e:
+                    messages.error(
+                        request,
+                        f"Error occurred while trying to email invitation to {invitation.invitee.email}: {str(e)}",
+                    )
+                messages.success(
+                    request, f"Successfully emailed reminder for {invitation}"
+                )
+            else:
+                messages.warning(
+                    request,
+                    f"{invitation.invitee.display_name} has not been sent an invitation. Reminder not sent.",
+                )

@@ -23,8 +23,8 @@ class InvitationDetailView(generic.DetailView):
         if self.object.event.end_time < now:
             raise Http404("Event is in the past")
         form = InvitationForm(instance=self.object)
-        has_visited = self.object.is_attending is not None
-        context = self.get_context_data(form=form, has_visited=has_visited)
+        has_responded = self.object.is_attending is not None
+        context = self.get_context_data(form=form, has_responded=has_responded)
         return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):

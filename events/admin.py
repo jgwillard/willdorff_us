@@ -102,10 +102,11 @@ class EventAdmin(admin.ModelAdmin):
         for event in queryset:
             # NOTE see https://stackoverflow.com/questions/2005953/access-fields-in-django-intermediate-model
             for invitation in event.invitation_set.all():
-                if not invitation.is_attending and invitation.is_sent:
+                if invitation.is_sent:
                     try:
                         subject = f"Reminder: {event.name}"
                         template_name = "events/emails/reminder_email.html"
+                        has_responded = invitation.is_attending is not None
                         link = settings.HOST + reverse(
                             "rsvp", kwargs={"unique_id": invitation.unique_id}
                         )
@@ -114,6 +115,7 @@ class EventAdmin(admin.ModelAdmin):
                             "event": event,
                             "invitation": invitation,
                             "link": link,
+                            "has_responded": has_responded,
                         }
 
                         html_message = render_to_string(template_name, context)
@@ -131,19 +133,14 @@ class EventAdmin(admin.ModelAdmin):
                             request,
                             f"Error occurred while trying to email invitation to {invitation.invitee.email}: {str(e)}",
                         )
-                elif not invitation.is_sent:
+                else:
                     messages.warning(
                         request,
                         f"{invitation.invitee.display_name} has not been sent an invitation. Reminder not sent.",
                     )
-                elif invitation.is_attending:
-                    messages.warning(
-                        request,
-                        f"{invitation.invitee.display_name} has already said they're coming. Reminder not sent.",
-                    )
 
             messages.success(
-                request, f"Successfully emailed invitations for {event}"
+                request, f"Successfully emailed reminders for {event}"
             )
 
     @admin.action(

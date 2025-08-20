@@ -7,6 +7,7 @@
     <p>Hi, {{ invitation.invitee.display_name }}!</p>
     <p>You've been invited to {{ event.name }}.</p>
     <section>{{ event.description|safe }}</section>
+    <p>When: {{ event.start_time|date:"F j, Y, P" }}<br>Where: {{ event.location }}</p>
     <p>Please <a href="{{ link }}">click here</a> to let us know if you can make it!</p>
   </body>
 </html>

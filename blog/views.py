@@ -1,6 +1,6 @@
 from django.utils.translation import gettext_lazy as _
 from django.utils.datastructures import MultiValueDictKeyError
-from django.views.generic import ListView
+from django.views.generic import DetailView, ListView
 from django.http import Http404, JsonResponse
 
 from django_ckeditor_5.views import (
@@ -21,6 +21,11 @@ class HomePageView(ListView):
     ordering = ["-published_date"]
     paginate_by = 3
     queryset = Post.objects.filter(is_published=True)
+
+class PostView(DetailView):
+    template_name = "blog/post.html"
+    model = Post
+    context_object_name = "post"
 
 
 # copied from django_ckeditor_5.views

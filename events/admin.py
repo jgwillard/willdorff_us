@@ -14,11 +14,9 @@ from core.models import ContactList
 from .models import Event, Invitation
 
 
-def send_event_email(invitation, event, subject, template_name):
+def send_email(invitation, event, subject, template_name):
     subject = f"RSVP to {event.name}"
-    link = settings.HOST + reverse(
-        "rsvp", kwargs={"unique_id": invitation.unique_id}
-    )
+    link = settings.HOST + reverse("rsvp", kwargs={"unique_id": invitation.unique_id})
     has_responded = invitation.is_attending is not None
     context = {
         "subject": subject,
@@ -84,7 +82,7 @@ class EventAdmin(admin.ModelAdmin):
             for invitation in event.invitation_set.all():
                 if not invitation.is_sent:
                     try:
-                        send_event_email(
+                        send_email(
                             invitation,
                             event,
                             f"RSVP to {event.name}",
@@ -103,9 +101,7 @@ class EventAdmin(admin.ModelAdmin):
                         f"Invitation has already been sent to {invitation.invitee.email}. Invitation not re-sent.",
                     )
 
-            messages.success(
-                request, f"Successfully emailed invitations for {event}"
-            )
+            messages.success(request, f"Successfully emailed invitations for {event}")
 
     @admin.action(description="Email reminders for selected events")
     def email_reminders(self, request, queryset):
@@ -114,7 +110,7 @@ class EventAdmin(admin.ModelAdmin):
             for invitation in event.invitation_set.all():
                 if invitation.is_sent:
                     try:
-                        send_event_email(
+                        send_email(
                             invitation,
                             event,
                             f"Reminder: {event.name}",
@@ -131,9 +127,7 @@ class EventAdmin(admin.ModelAdmin):
                         f"{invitation.invitee.display_name} has not been sent an invitation. Reminder not sent.",
                     )
 
-            messages.success(
-                request, f"Successfully emailed reminders for {event}"
-            )
+            messages.success(request, f"Successfully emailed reminders for {event}")
 
     @admin.action(
         description="Invite all contacts on a contact list to selected events"
@@ -160,9 +154,7 @@ class EventAdmin(admin.ModelAdmin):
                         f"Error ocurred when creating invitations to {event} for {contact_list}: {str(e)}",
                     )
 
-            return HttpResponseRedirect(
-                reverse("admin:events_event_changelist")
-            )
+            return HttpResponseRedirect(reverse("admin:events_event_changelist"))
 
         return render(
             request,
@@ -185,7 +177,7 @@ class InvitationAdmin(admin.ModelAdmin):
             event = invitation.event
             if invitation.is_sent:
                 try:
-                    send_event_email(
+                    send_email(
                         invitation,
                         event,
                         f"Reminder: {event.name}",

@@ -20,4 +20,4 @@ class ContactList(models.Model):
     contacts = models.ManyToManyField(Contact)
 
     def __str__(self) -> str:
-        return self.name
+        return f"{self.name}"

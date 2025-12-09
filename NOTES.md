@@ -2,7 +2,7 @@
 
 ## Deployment
 
-* [Initial server setup](https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-16-04) (create non-root user, set up SSH access and firewall)
+* [Initial server setup](https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-20-04) (create non-root user, set up SSH access and firewall)
 * [Django setup](https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-16-04) (install dependencies, set up virtualenv, create django project, configure gunicorn and nginx)
   * [Environment variables for gunicorn](https://stackoverflow.com/questions/25076295/gunicorn-environment-variable-setting)
 * [Create DNS records](https://www.namecheap.com/support/knowledgebase/article.aspx/319/2237/how-can-i-set-up-an-a-address-record-for-my-domain/)
@@ -13,6 +13,7 @@
 ## Sample nginx config
 
 `/etc/nginx/sites-available/willdorff_us`:
+
 ```
 server {
     server_name willdorff.us;
@@ -51,6 +52,7 @@ server {
 ```
 
 `/etc/nginx/sites-available/www_willdorff_us`:
+
 ```
 server {
     # redirect wwww.willdorff.us to willdorff.us
@@ -77,6 +79,7 @@ server {
 ## Sample gunicorn config
 
 `/etc/systemd/system/gunicorn.service`:
+
 ```
 [Unit]
 Description=gunicorn daemon

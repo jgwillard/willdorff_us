@@ -53,7 +53,7 @@ server {
 
 `/etc/nginx/sites-available/www_willdorff_us`:
 
-```
+```nginx
 server {
     # redirect wwww.willdorff.us to willdorff.us
     server_name www.willdorff.us;

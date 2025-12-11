@@ -8,7 +8,7 @@ from blog.models import Post
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    readonly_fields = ["author", "published_date", "created_date"]
+    readonly_fields = ["author", "published_date", "created_date", "slug"]
     formfield_overrides = {
         models.TextField: {
             "widget": CKEditor5Widget(

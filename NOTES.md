@@ -76,6 +76,20 @@ server {
 }
 ```
 
+### File uploads
+
+To support image file uploads, ensure the following line is added to `/etc/nginx/nginx.conf`:
+
+```nginx
+http {
+  # ...
+  client_max_body_size 10m;
+  # ...
+}
+```
+
+Otherwise you may get a `413 Request Entity Too Large` error.
+
 ## Sample gunicorn config
 
 `/etc/systemd/system/gunicorn.service`:
@@ -112,20 +126,6 @@ RestartSec=5
 StartLimitInterval=10min
 StartLimitBurst=5
 ```
-
-### File uploads
-
-To support image file uploads, ensure the following line is added to `/etc/nginx/nginx.conf`:
-
-```nginx
-http {
-  # ...
-  client_max_body_size 10m;
-  # ...
-}
-```
-
-Otherwise you may get a `413 Request Entity Too Large` error.
 
 ## Deploying changes
 

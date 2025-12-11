@@ -14,7 +14,7 @@
 
 `/etc/nginx/sites-available/willdorff_us`:
 
-```
+```nginx
 server {
     server_name willdorff.us;
 
@@ -80,7 +80,7 @@ server {
 
 `/etc/systemd/system/gunicorn.service`:
 
-```
+```gunicorn
 [Unit]
 Description=gunicorn daemon
 After=network.target
@@ -104,7 +104,7 @@ In that case, `sudo journalctl -u gunicorn` will show `systemd[1]: gunicorn.serv
 
 To recover from this error, add the following to `/etc/systemd/system/gunicorn.service`:
 
-```
+```gunicorn
 [Service]
 Restart=always
 RestartSec=5
@@ -112,6 +112,20 @@ RestartSec=5
 StartLimitInterval=10min
 StartLimitBurst=5
 ```
+
+### File uploads
+
+To support image file uploads, ensure the following line is added to `/etc/nginx/nginx.conf`:
+
+```nginx
+http {
+  # ...
+  client_max_body_size 10m;
+  # ...
+}
+```
+
+Otherwise you may get a `413 Request Entity Too Large` error.
 
 ## Deploying changes
 

@@ -21,3 +21,12 @@ class ContactList(models.Model):
 
     def __str__(self) -> str:
         return f"{self.name}"
+
+
+class GoogleOAuthToken(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+    token_json = models.JSONField()
+    updated_ts = models.DateTimeField(auto_now=True)
+
+    def __str__(self) -> str:
+        return f"{self.name}"

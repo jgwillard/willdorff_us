@@ -3,9 +3,10 @@ from io import TextIOWrapper
 from django import forms
 from django.contrib import admin, messages
 from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
 from django.urls import path, reverse
 
-from .models import Contact, ContactList
+from .models import Contact, ContactList, GoogleOAuthToken
 
 admin.site.site_header = "willdorff.us administration"
 
@@ -56,9 +57,7 @@ class ContactAdmin(admin.ModelAdmin):
                                 f"Failed to save the following contacts: {'; '.join(failed_to_save_contacts)}",
                             )
                         else:
-                            messages.success(
-                                request, "Contacts succesfully added"
-                            )
+                            messages.success(request, "Contacts succesfully added")
                         return HttpResponseRedirect(user_url)
                     except Exception as e:
                         messages.error(
@@ -88,3 +87,34 @@ class ContactListAdmin(admin.ModelAdmin):
             kwargs["widget"] = forms.MultipleHiddenInput()
             kwargs["required"] = False
         return super().formfield_for_manytomany(db_field, request, **kwargs)
+
+
+@admin.register(GoogleOAuthToken)
+class GoogleOAuthTokenAdmin(admin.ModelAdmin):
+    list_display = ("name", "updated_ts")
+
+    def get_urls(self):
+        from django.urls import path
+        from . import views
+
+        urls = super().get_urls()
+        custom_urls = [
+            path(
+                "authorize/",
+                self.admin_site.admin_view(views.start_oauth),
+                name="google_oauth_start",
+            ),
+            path(
+                "callback/",
+                self.admin_site.admin_view(views.oauth_callback),
+                name="google_oauth_callback",
+            ),
+        ]
+        return custom_urls + urls
+
+    actions = ["start_authorization"]
+
+    def start_authorization(self, request, queryset):
+        return redirect(reverse("admin:google_oauth_start"))
+
+    start_authorization.short_description = "Authorize Gmail API (one-time)"

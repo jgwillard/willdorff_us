@@ -24,8 +24,6 @@ def start_oauth(request):
         scopes=SCOPES,
     )
 
-    # flow = Flow.from_client_secrets_file("client_secret.json", scopes=SCOPES)
-
     flow.redirect_uri = request.build_absolute_uri(
         reverse("admin:google_oauth_callback")
     )
@@ -37,12 +35,14 @@ def start_oauth(request):
     )
 
     request.session["oauth_state"] = state
+    request.session["oauth_code_verifier"] = flow.code_verifier
 
     return redirect(authorization_url)
 
 
 def oauth_callback(request):
     state = request.session.get("oauth_state")
+    code_verifier = request.session.get("oauth_code_verifier")
 
     flow = Flow.from_client_config(
         {
@@ -57,7 +57,10 @@ def oauth_callback(request):
         state=state,
     )
 
-    flow.redirect_uri = request.build_absolute_uri("/admin/google-oauth/callback/")
+    flow.redirect_uri = request.build_absolute_uri(
+        reverse("admin:google_oauth_callback")
+    )
+    flow.code_verifier = code_verifier  # restore PKCE verifier
 
     flow.fetch_token(authorization_response=request.build_absolute_uri())
 

@@ -64,10 +64,7 @@ class GmailAPIBackend(BaseEmailBackend):
         sent_count = 0
 
         for message in email_messages:
-            mime = MIMEText(message.body, "plain", "utf-8")
-            mime["To"] = ", ".join(message.to)
-            mime["From"] = message.from_email
-            mime["Subject"] = message.subject
+            mime = message.message()
 
             raw = base64.urlsafe_b64encode(mime.as_bytes()).decode()
 

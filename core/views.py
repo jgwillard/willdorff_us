@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.http import HttpResponse
+from django.contrib import messages
 from django.shortcuts import redirect
 from django.urls import reverse
 
@@ -67,7 +67,8 @@ def oauth_callback(request):
     creds = flow.credentials
 
     # Save/update token
-    GoogleOAuthToken.objects.update_or_create(
+    token_obj, _ = GoogleOAuthToken.objects.update_or_create(
+        # NOTE hard-coded to use a single token 'default'
         name="default",
         defaults={
             "token_json": {
@@ -78,4 +79,6 @@ def oauth_callback(request):
         },
     )
 
-    return HttpResponse("Authorization complete. You can close this window.")
+    messages.success(request, f"Authorization complete for token '{token_obj.name}'")
+
+    return redirect("admin:core_googleoauthtoken_changelist")

@@ -22,6 +22,7 @@ class HomePageView(ListView):
     paginate_by = 3
     queryset = Post.objects.filter(is_published=True)
 
+
 class PostView(DetailView):
     template_name = "blog/post.html"
     model = Post
@@ -44,5 +45,5 @@ def upload_file(request):
             # function and django_ckeditor_5.views.upload_file
             resized = resize_image(f)
             url = handle_uploaded_file(resized)
-            return JsonResponse({"url": url})
+            return JsonResponse({"url": request.build_absolute_uri(url)})
     return Http404(_("Page not found."))

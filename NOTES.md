@@ -127,6 +127,18 @@ StartLimitInterval=10min
 StartLimitBurst=5
 ```
 
+## Gmail API
+
+The application is now using the Gmail API to send mail and avoid app passwords.
+
+Configuration can be found at [Google Cloud](https://console.cloud.google.com/) under the Google Auth Platform product.
+
+Authentication is done via OAuth; this feature must be enabled, the redirect URI must be whitelisted, and the email used to sign in must be added to "Test users" (under "Audience").
+
+The `GoogleOAuthToken` model stores a single refresh token named "default" that is used to send emails from one gmail account. Fetching the refresh token can be done via admin action once the single row for that model is created.
+
+Note that this requires the `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` environment variables to be set.
+
 ## Deploying changes
 
 ```sh

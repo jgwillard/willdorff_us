@@ -32,9 +32,12 @@ HOST = os.environ.get("HOST")
 EMAIL_BACKEND = (
     "django.core.mail.backends.console.EmailBackend"
     if DEBUG
-    else "django.core.mail.backends.smtp.EmailBackend"
+    else "willdorff_us.email_backends.GmailAPIBackend"
 )
 
+GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID")
+
+GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET")
 
 EMAIL_HOST = os.environ.get("EMAIL_HOST")
 
@@ -45,13 +48,9 @@ EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 # NOTE use port 465 with SSL or port 587 with TLS
 EMAIL_PORT = os.environ.get("EMAIL_PORT")
 
-EMAIL_USE_SSL = bool(
-    strtobool(os.environ.get("EMAIL_USE_SSL", default="false"))
-)
+EMAIL_USE_SSL = bool(strtobool(os.environ.get("EMAIL_USE_SSL", default="false")))
 
-EMAIL_USE_TLS = bool(
-    strtobool(os.environ.get("EMAIL_USE_TLS", default="false"))
-)
+EMAIL_USE_TLS = bool(strtobool(os.environ.get("EMAIL_USE_TLS", default="false")))
 
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL")
 
@@ -170,7 +169,8 @@ CKEDITOR_5_CONFIGS = {
                 "|",
                 "imageStyle:inline",
                 "imageStyle:wrapText",
-                "imageStyle:breakText" "|",
+                "imageStyle:breakText",
+                "|",
                 "resizeImage",
             ],
             "styles": [

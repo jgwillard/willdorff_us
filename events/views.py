@@ -33,9 +33,7 @@ class InvitationDetailView(generic.DetailView):
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(
-                reverse(
-                    "rsvp_thanks", kwargs={"unique_id": self.object.unique_id}
-                )
+                reverse("rsvp_thanks", kwargs={"unique_id": self.object.unique_id})
             )
         context = self.get_context_data(form=form)
         return self.render_to_response(context)
